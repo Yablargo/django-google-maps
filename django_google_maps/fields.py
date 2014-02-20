@@ -57,6 +57,11 @@ class GeoPt(object):
             return "%s,%s" % (self.lat, self.lon)
         return ''
 
+    def __unicode__(self):
+        if self.lat is not None and self.lon is not None:
+            return "%s,%s" % (self.lat, self.lon)
+        return ''
+
     def __eq__(self, other):
         if isinstance(other, GeoPt):
             return bool(self.lat == other.lat and self.lon == other.lon)
@@ -119,7 +124,7 @@ class GeoLocationField(models.CharField):
         """prepare the value for database query"""
         if value is None:
             return None
-        return value
+        return value.__str__()
 
     def get_prep_lookup(self, lookup_type, value):
         # We only handle 'exact' and 'in'. All others are errors.
@@ -131,7 +136,7 @@ class GeoLocationField(models.CharField):
             raise TypeError('Lookup type %r not supported.' % lookup_type)
 
     def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
+        value = obj.__str__()
         return self.get_prep_value(value)
 
 try:
