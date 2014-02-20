@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 # The core of this module was adapted from Google AppEngine's
 # GeoPt field, so I've included their copyright and license.
 #
@@ -51,7 +52,7 @@ class GeoPt(object):
         self.lat = self._validate_geo_range(lat, 90)
         self.lon = self._validate_geo_range(lon, 180)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.lat is not None and self.lon is not None:
             return "%s,%s" % (self.lat, self.lon)
         return ''
@@ -62,7 +63,7 @@ class GeoPt(object):
         return False
 
     def __len__(self):
-        return len(self.__unicode__())
+        return len(self.__str__())
 
     def _split_geo_point(self, geo_point):
         """splits the geo point into lat and lon"""
@@ -118,7 +119,7 @@ class GeoLocationField(models.CharField):
         """prepare the value for database query"""
         if value is None:
             return None
-        return unicode(value)
+        return value
 
     def get_prep_lookup(self, lookup_type, value):
         # We only handle 'exact' and 'in'. All others are errors.
